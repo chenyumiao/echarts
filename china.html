@@ -1,0 +1,75 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>china</title>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+</head>
+
+<body>
+<div id="main" style="width: 375px;height:500px;margin:50px auto;"></div>
+<script src="./echarts.js"></script>
+<script src="./jquery.min.js"></script>
+<script src="./roma.js"></script>
+<script>
+  $.get('./china.json', function (chinaJson) {
+    echarts.registerMap('china', chinaJson,{
+      '香港': {              // 把香港向外移动，不然因为区域太小，不好点击
+        left: 115,
+        top: 21,
+        width: 2
+      },
+      '澳门': {              // 把澳门向外移动，不然因为区域太小，不好点击
+        left: 114,
+        top: 20,
+        width: 1
+      }
+    });
+    var chart = echarts.init(document.getElementById('main'));
+    chart.setOption({
+      tooltip:{
+        trigger:'item',
+        formatter:'{b}'
+      },
+      series: [{
+        type: 'map',
+        map: 'china',
+        selectedMode:'single',
+        roam:true,
+        zoom:2,
+        center: [115.97, 29.71],
+        label:{
+          normal:{
+            show:true,
+            textStyle:{
+              color:'#000',
+              fontSize:12
+            }
+          },
+          emphasis:{
+            show:true,
+            textStyle:{
+              color:'#000',
+              fontSize:12
+            }
+          }
+        },
+        itemStyle:{
+          normal:{
+            areaColor:'#516b91'
+          },
+          emphasis:{
+            areaColor:'#59c4e6'
+          }
+        }
+      }]
+    });
+    chart.on('click', function (params) {
+      // 控制台打印数据的名称
+      console.log(params.name);
+    });
+  });
+
+</script>
+
+</body>
+</html>

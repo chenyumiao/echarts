@@ -1,0 +1,81 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>yazhou</title>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+</head>
+
+<body style="background: #0b1753;">
+<div id="main" style="height:800px;"></div>
+<script src="./echarts.js"></script>
+<script src="./jquery.min.js"></script>
+<script>
+  var myChart = echarts.init(document.getElementById('main'));
+  myChart.showLoading();
+
+  $.get('./yazhou.json', function (chinaJson) {
+    myChart.hideLoading();
+    echarts.registerMap('yazhou', chinaJson,{
+
+    });
+
+    myChart.setOption({
+      tooltip:{
+        trigger:'item',
+        formatter:'{b}'
+      },
+      series: [{
+        type: 'map',
+        map: 'yazhou',
+        selectedMode:'multiple',
+        roam:true,
+        zoom:3,
+        center: [115.97, 29.71],
+        label:{
+          normal:{
+            show:true,
+            textStyle:{
+              color:'#fff',
+              fontSize:12
+            }
+          },
+          emphasis:{
+            show:true,
+            textStyle:{
+              color:'#fff',
+              fontSize:12
+            }
+          }
+        },
+        itemStyle:{
+          normal:{
+            areaColor:{
+              type: 'linear',
+              x: 1,
+              y: 1,
+              x2: 0,
+              y2: 0,
+              colorStops: [{
+                offset: 0, color: '#395b98' // 0% 处的颜色
+              }, {
+                offset: 1, color: '#21387a' // 100% 处的颜色
+              }]
+            },
+            borderColor:'1c3a76'
+          },
+          emphasis:{
+            areaColor:'#3e8cdb',
+            borderColor:'1c3a76'
+          }
+        }
+      }]
+    });
+  });
+  myChart.on('click', function (params) {
+    // 控制台打印数据的名称
+    console.log(params.name);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>world</title>
+  <!--<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />-->
+</head>
+
+<body>
+<div id="main" style="height:2000px;"></div>
+<script src="./echarts.js"></script>
+<script src="./jquery.min.js"></script>
+<script>
+  var myChart = echarts.init(document.getElementById('main'));
+  myChart.showLoading();
+
+  $.get('./world.json', function (chinaJson) {
+    myChart.hideLoading();
+    echarts.registerMap('world', chinaJson,{
+      '香港': {              // 把阿拉斯加移到美国主大陆左下方
+        left: 115,
+        top: 21,
+        width: 2
+      },
+      '澳门': {              // 把阿拉斯加移到美国主大陆左下方
+        left: 114,
+        top: 20,
+        width: 1
+      }
+    });
+    myChart.setOption({
+      tooltip:{
+        trigger:'item',
+        formatter:'{b}'
+      },
+      series: [{
+        type: 'map',
+        map: 'world',
+        selectedMode:'single',
+        roam:true,
+        zoom:2,
+        center: [115.97, 29.71],
+        label:{
+          normal:{
+            show:true,
+            textStyle:{
+              color:'#000',
+              fontSize:28
+            }
+          },
+          emphasis:{
+            show:true,
+            textStyle:{
+              color:'#000',
+              fontSize:28
+            }
+          }
+        },
+        itemStyle:{
+          normal:{
+
+          },
+          emphasis:{
+
+          }
+        }
+      }]
+    });
+  });
+  myChart.on('click', function (params) {
+    // 控制台打印数据的名称
+    console.log(params.name);
+  });
+</script>
+
+</body>
+</html>

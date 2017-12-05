@@ -1,0 +1,70 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>feizhou</title>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+</head>
+
+<body style="background: #0b1753;">
+<div id="main" style="height:800px;"></div>
+<script src="./echarts.js"></script>
+<script src="./jquery.min.js"></script>
+<script>
+  var myChart = echarts.init(document.getElementById('main'));
+  myChart.showLoading();
+
+  $.get('./feizhou.json', function (chinaJson) {
+    myChart.hideLoading();
+    echarts.registerMap('feizhou', chinaJson,{
+
+    });
+
+    myChart.setOption({
+      tooltip:{
+        trigger:'item',
+        formatter:'{b}'
+      },
+      series: [{
+        type: 'map',
+        map: 'feizhou',
+        selectedMode:'multiple',
+        roam:true,
+        zoom:2,
+        center: [30.97, 0],
+        label:{
+          normal:{
+            show:true,
+            textStyle:{
+              color:'#fff',
+              fontSize:12
+            }
+          },
+          emphasis:{
+            show:true,
+            textStyle:{
+              color:'#fff',
+              fontSize:12
+            }
+          }
+        },
+        itemStyle:{
+          normal:{
+            areaColor:'#3e639d',
+            borderColor:'1c3a76'
+          },
+          emphasis:{
+            areaColor:'#3e8cdb',
+            borderColor:'1c3a76'
+          }
+        }
+      }]
+    });
+  });
+  myChart.on('click', function (params) {
+    // 控制台打印数据的名称
+    console.log(params.name);
+  });
+</script>
+
+</body>
+</html>

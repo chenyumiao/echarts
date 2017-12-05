@@ -1,0 +1,84 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>dazhou</title>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+</head>
+
+<body style="background: #0b1753;">
+<div id="main" style="width: 375px;height:500px;margin:50px auto;"></div>
+<script src="./echarts.js"></script>
+<script src="./jquery.min.js"></script>
+<script>
+  var myChart = echarts.init(document.getElementById('main'));
+  myChart.showLoading();
+
+  $.get('./continent_geo.json', function (continentJson) {
+    myChart.hideLoading();
+
+    echarts.registerMap('continent', continentJson, {});
+    option = {
+      tooltip: {
+        trigger: 'item',
+        showDelay: 0,
+        transitionDuration: 0.2,
+        formatter: function (params) {
+          return  params.name;
+        }
+      },
+      series: [
+        {
+          name: '七大洲',
+          type: 'map',
+          roam: true,
+          zoom:2,
+          map: 'continent',
+          selectedMode:'single',
+          label:{
+            normal:{
+              show:true,
+              textStyle:{
+                color:'#fff',
+                fontSize:12
+              }
+            },
+            emphasis:{
+              show:true,
+              textStyle:{
+                color:'#fff',
+                fontSize:12
+              }
+            }
+          },
+          itemStyle:{
+            normal:{
+              areaColor:'#3e639d',
+              borderColor:'1c3a76'
+            },
+            emphasis:{
+              areaColor:'#3e8cdb',
+              borderColor:'1c3a76'
+            }
+          },
+          data:[
+            {name: '亚洲', value: 8967.69},
+            {name: '大洋洲', value: 592.09},
+            {name: '欧洲', value: 183.62},
+            {name: '北美洲', value: 41.63},
+            {name: '南美洲', value: 10.41},
+            {name: '非洲', value: 22.5837}
+          ]
+        }
+      ]
+    };
+
+    myChart.setOption(option);
+  });
+  myChart.on('click', function (params) {
+    // 控制台打印数据的名称
+    console.log(params.name);
+  });
+</script>
+
+</body>
+</html>
